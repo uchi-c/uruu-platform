@@ -1,0 +1,709 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+--bg:#0A0A0B;--card:#141417;--border:#2A2A2E;--text:#E1E1E6;--muted:#71717A;
+--purple:#7C3AED;--purple-dim:rgba(124,58,237,0.12);--purple-glow:rgba(124,58,237,0.25);
+--red:rgba(239,68,68,1);--red-dim:rgba(239,68,68,0.12);
+--yellow:rgba(234,179,8,1);--yellow-dim:rgba(234,179,8,0.12);
+--green:rgba(34,197,94,1);--green-dim:rgba(34,197,94,0.12);
+--blue:rgba(59,130,246,1);--blue-dim:rgba(59,130,246,0.12);
+--orange:rgba(249,115,22,1);--orange-dim:rgba(249,115,22,0.12);
+}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:13px;line-height:1.5;min-height:600px;overflow-x:hidden}
+.app{display:flex;height:600px;overflow:hidden}
+.sidebar{width:220px;background:var(--card);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0}
+.sidebar-logo{padding:20px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.logo-mark{width:30px;height:30px;background:var(--purple);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;letter-spacing:.05em;flex-shrink:0}
+.logo-text{font-size:14px;font-weight:700;letter-spacing:.18em;color:#fff;font-family:'Courier New',monospace}
+.logo-sub{font-size:9px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-top:1px}
+.nav{flex:1;padding:12px 10px;display:flex;flex-direction:column;gap:2px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;cursor:pointer;color:var(--muted);border:1px solid transparent;transition:all .15s;font-size:12px;font-weight:500}
+.nav-item:hover{color:var(--text);background:rgba(255,255,255,0.04)}
+.nav-item.active{color:#fff;background:var(--purple-dim);border-color:rgba(124,58,237,0.3)}
+.nav-item.active .nav-icon{color:var(--purple)}
+.nav-icon{font-size:15px;flex-shrink:0}
+.nav-logout{padding:12px 10px;border-top:1px solid var(--border)}
+.nav-logout .nav-item:hover{color:#f87171}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.header{height:56px;border-bottom:1px solid var(--border);background:rgba(20,20,23,0.95);display:flex;align-items:center;justify-content:space-between;padding:0 20px;flex-shrink:0}
+.search-wrap{position:relative;width:260px}
+.search-wrap i{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:14px}
+.search-wrap input{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:7px 12px 7px 32px;color:var(--text);font-size:12px;outline:none;transition:border-color .15s}
+.search-wrap input:focus{border-color:var(--purple)}
+.search-wrap input::placeholder{color:var(--muted)}
+.header-right{display:flex;align-items:center;gap:12px}
+.notif-btn{position:relative;width:34px;height:34px;border-radius:6px;border:1px solid var(--border);background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted)}
+.notif-btn:hover{color:var(--text);border-color:#444}
+.notif-dot{position:absolute;top:7px;right:7px;width:6px;height:6px;border-radius:50%;background:var(--purple);border:1.5px solid var(--card)}
+.divider{width:1px;height:24px;background:var(--border)}
+.user-chip{display:flex;align-items:center;gap:8px;cursor:pointer;padding:4px 8px;border-radius:6px;border:1px solid transparent;transition:all .15s}
+.user-chip:hover{border-color:var(--border);background:rgba(255,255,255,0.04)}
+.avatar{width:30px;height:30px;border-radius:50%;background:var(--purple-dim);border:1.5px solid rgba(124,58,237,0.4);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--purple)}
+.user-info{text-align:right}
+.user-name{font-size:12px;font-weight:600;color:#fff;line-height:1.2}
+.user-role{font-size:10px;color:var(--muted)}
+.content{flex:1;overflow-y:auto;padding:24px;scroll-behavior:smooth}
+.content::-webkit-scrollbar{width:4px}
+.content::-webkit-scrollbar-track{background:transparent}
+.content::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.page{display:none}
+.page.active{display:block}
+.page-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:24px}
+.page-title{font-size:18px;font-weight:700;color:#fff;letter-spacing:-.01em}
+.page-sub{font-size:12px;color:var(--muted);margin-top:3px}
+.btn-primary{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:var(--purple);border:none;border-radius:6px;color:#fff;font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;letter-spacing:.01em}
+.btn-primary:hover{background:#6d28d9;box-shadow:0 0 0 3px var(--purple-glow)}
+.btn-primary:active{transform:scale(.98)}
+.btn-ghost{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--muted);font-size:12px;font-weight:500;cursor:pointer;transition:all .15s}
+.btn-ghost:hover{color:var(--text);border-color:#444}
+.card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;transition:border-color .2s}
+.card:hover{border-color:#3a3a3e}
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;display:flex;align-items:center;gap:12px;border-left:2px solid var(--purple)}
+.stat-icon{width:38px;height:38px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.stat-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:600}
+.stat-value{font-size:22px;font-weight:700;color:#fff;line-height:1.1;margin-top:2px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+.section-title{font-size:13px;font-weight:600;color:#fff;margin-bottom:14px}
+.incident-row{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--bg);border:1px solid var(--border);border-radius:6px;margin-bottom:8px;transition:border-color .15s;cursor:pointer}
+.incident-row:hover{border-color:#3a3a3e}
+.incident-row:last-child{margin-bottom:0}
+.dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.inc-title{font-size:12px;font-weight:500;color:#fff}
+.inc-meta{font-size:10px;color:var(--muted);margin-top:2px}
+.badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border:1px solid transparent}
+.badge-review{background:rgba(113,113,122,0.15);color:#a1a1aa;border-color:rgba(113,113,122,0.2)}
+.chart-placeholder{height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;border:1px dashed var(--border);border-radius:6px;color:var(--muted)}
+.chart-placeholder i{font-size:28px;opacity:.4}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+thead tr{border-bottom:1px solid var(--border)}
+th{padding:10px 12px;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.09em;text-align:left;white-space:nowrap}
+td{padding:13px 12px;font-size:12px;border-bottom:1px solid rgba(42,42,46,0.5);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tbody tr{transition:background .12s;cursor:pointer}
+tbody tr:hover{background:rgba(124,58,237,0.04)}
+.badge-critical{background:var(--red-dim);color:#f87171;border-color:rgba(239,68,68,0.25)}
+.badge-high{background:var(--orange-dim);color:#fb923c;border-color:rgba(249,115,22,0.25)}
+.badge-medium{background:var(--yellow-dim);color:#facc15;border-color:rgba(234,179,8,0.25)}
+.badge-low{background:var(--blue-dim);color:#60a5fa;border-color:rgba(59,130,246,0.25)}
+.badge-investigating{background:var(--yellow-dim);color:#facc15;border-color:rgba(234,179,8,0.25)}
+.badge-contained{background:var(--blue-dim);color:#60a5fa;border-color:rgba(59,130,246,0.25)}
+.badge-resolved{background:var(--green-dim);color:#4ade80;border-color:rgba(34,197,94,0.25)}
+.badge-open{background:var(--red-dim);color:#f87171;border-color:rgba(239,68,68,0.25)}
+.badge-completed{background:var(--green-dim);color:#4ade80;border-color:rgba(34,197,94,0.25)}
+.badge-inprogress{background:var(--yellow-dim);color:#facc15;border-color:rgba(234,179,8,0.25)}
+.badge-purple{background:var(--purple-dim);color:#a78bfa;border-color:rgba(124,58,237,0.3)}
+.search-bar{position:relative;margin-bottom:16px}
+.search-bar i{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:13px}
+.search-bar input{width:100%;max-width:280px;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:7px 12px 7px 30px;color:var(--text);font-size:12px;outline:none}
+.search-bar input:focus{border-color:var(--purple)}
+.search-bar input::placeholder{color:var(--muted)}
+.action-link{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;color:var(--purple);text-decoration:none;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+.action-link:hover{text-decoration:underline}
+.row-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px}
+.icon-btn{width:28px;height:28px;border-radius:5px;border:1px solid var(--border);background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted);font-size:13px;transition:all .12s}
+.icon-btn:hover{border-color:var(--purple);color:var(--purple)}
+.progress-bar{width:100%;height:5px;background:var(--bg);border-radius:3px;overflow:hidden;border:1px solid var(--border)}
+.progress-fill{height:100%;border-radius:3px;background:var(--purple);transition:width .4s ease}
+.progress-fill.green{background:var(--green)}
+.compliance-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:18px}
+.compliance-card:hover{border-color:#3a3a3e}
+.score-text{font-size:22px;font-weight:700;color:#fff}
+.report-type-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:18px;display:flex;flex-direction:column;justify-content:space-between;height:172px;position:relative;overflow:hidden}
+.report-type-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px}
+.report-exec::before{background:var(--purple)}
+.report-audit::before{background:var(--green)}
+.report-incident::before{background:var(--red)}
+.report-title{font-size:13px;font-weight:600;color:#fff;margin-bottom:6px}
+.report-desc{font-size:11px;color:var(--muted);line-height:1.5}
+.login-page{min-height:600px;display:flex;align-items:center;justify-content:center;background:var(--bg);position:relative}
+.grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(124,58,237,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(124,58,237,.04) 1px,transparent 1px);background-size:28px 28px;pointer-events:none}
+.login-box{width:380px;background:var(--card);border:1px solid rgba(124,58,237,0.25);border-radius:10px;padding:36px;position:relative;z-index:1;box-shadow:0 0 40px rgba(124,58,237,0.1)}
+.login-logo{text-align:center;margin-bottom:28px}
+.login-logo-mark{width:56px;height:56px;border-radius:10px;background:var(--purple-dim);border:1px solid rgba(124,58,237,0.4);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:26px;color:var(--purple)}
+.login-app-name{font-size:20px;font-weight:700;letter-spacing:.25em;color:#fff;font-family:'Courier New',monospace}
+.login-app-name span{color:var(--purple)}
+.login-rule{width:40px;height:2px;background:var(--purple);border-radius:1px;margin:10px auto 8px}
+.login-tagline{font-size:10px;color:var(--muted);letter-spacing:.15em;text-transform:uppercase}
+.form-group{margin-bottom:18px}
+.form-label{display:block;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.15em;margin-bottom:8px}
+.form-input-wrap{position:relative}
+.form-input-wrap i{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--muted)}
+.form-input{width:100%;background:rgba(10,10,11,0.6);border:1px solid var(--border);border-radius:6px;padding:11px 12px 11px 36px;color:#fff;font-size:13px;outline:none;transition:border-color .15s}
+.form-input:focus{border-color:var(--purple)}
+.form-input::placeholder{color:rgba(113,113,122,0.5)}
+.login-btn{width:100%;padding:13px;background:var(--purple);border:none;border-radius:6px;color:#fff;font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .15s;margin-top:8px}
+.login-btn:hover{background:#6d28d9;box-shadow:0 0 0 3px var(--purple-glow)}
+.login-footer{display:flex;justify-content:space-between;margin-top:24px;padding-top:16px;border-top:1px solid rgba(42,42,46,0.6)}
+.login-footer-text{font-size:9px;color:rgba(113,113,122,0.5);letter-spacing:.12em;text-transform:uppercase}
+.login-footer-link{font-size:9px;color:var(--purple);font-weight:700;letter-spacing:.12em;text-transform:uppercase;cursor:pointer}
+.page-nav{display:flex;align-items:center;gap:8px;margin-bottom:20px;font-size:11px;color:var(--muted)}
+.page-nav span{color:var(--text)}
+.demo-notice{background:var(--purple-dim);border:1px solid rgba(124,58,237,0.25);border-radius:6px;padding:10px 14px;display:flex;align-items:center;gap:8px;margin-bottom:20px;font-size:11px;color:#a78bfa}
+.filter-row{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.filter-select{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:6px 10px;color:var(--muted);font-size:11px;outline:none;cursor:pointer}
+.filter-select:focus{border-color:var(--purple)}
+.count-chip{font-size:10px;color:var(--muted);margin-left:auto}
+.framework-tag{font-size:10px;font-weight:600;color:var(--muted);font-family:'Courier New',monospace;letter-spacing:.04em}
+</style>
+
+<h2 class="sr-only">URUU platform UI — refined dashboard, incidents, threats, compliance, reports, and login pages</h2>
+
+<div id="login-screen" class="login-page">
+  <div class="grid-bg"></div>
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="login-logo-mark"><i class="ti ti-shield-lock" aria-hidden="true"></i></div>
+      <div class="login-app-name">URUU <span>Access</span></div>
+      <div class="login-rule"></div>
+      <div class="login-tagline">Fortress Africa Operations</div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Operator identity</label>
+      <div class="form-input-wrap">
+        <i class="ti ti-user" aria-hidden="true"></i>
+        <input class="form-input" type="email" placeholder="operator@organization.gov" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Cryptographic key</label>
+      <div class="form-input-wrap">
+        <i class="ti ti-lock" aria-hidden="true"></i>
+        <input class="form-input" type="password" placeholder="••••••••••••••••" />
+      </div>
+    </div>
+    <button class="login-btn" onclick="showApp()">
+      <span>Authenticate</span>
+      <i class="ti ti-arrow-right" aria-hidden="true"></i>
+    </button>
+    <div class="login-footer">
+      <span class="login-footer-text">Auth v4.2.1 · Secure</span>
+      <span class="login-footer-link">Contact support</span>
+    </div>
+  </div>
+</div>
+
+<div id="app" style="display:none">
+  <div class="app">
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-mark">U</div>
+        <div>
+          <div class="logo-text">URUU</div>
+          <div class="logo-sub">Fortress Africa</div>
+        </div>
+      </div>
+      <nav class="nav">
+        <div class="nav-item active" onclick="switchPage('dashboard',this)" data-page="dashboard">
+          <i class="ti ti-layout-dashboard nav-icon" aria-hidden="true"></i>
+          <span>Dashboard</span>
+        </div>
+        <div class="nav-item" onclick="switchPage('threats',this)" data-page="threats">
+          <i class="ti ti-shield-exclamation nav-icon" aria-hidden="true"></i>
+          <span>Threats</span>
+        </div>
+        <div class="nav-item" onclick="switchPage('incidents',this)" data-page="incidents">
+          <i class="ti ti-alert-triangle nav-icon" aria-hidden="true"></i>
+          <span>Incidents</span>
+        </div>
+        <div class="nav-item" onclick="switchPage('compliance',this)" data-page="compliance">
+          <i class="ti ti-checkbox nav-icon" aria-hidden="true"></i>
+          <span>Compliance</span>
+        </div>
+        <div class="nav-item" onclick="switchPage('reports',this)" data-page="reports">
+          <i class="ti ti-file-text nav-icon" aria-hidden="true"></i>
+          <span>Reports</span>
+        </div>
+        <div class="nav-item" onclick="switchPage('settings',this)" data-page="settings">
+          <i class="ti ti-settings nav-icon" aria-hidden="true"></i>
+          <span>Settings</span>
+        </div>
+      </nav>
+      <div class="nav-logout">
+        <div class="nav-item" onclick="showLogin()">
+          <i class="ti ti-logout nav-icon" aria-hidden="true"></i>
+          <span>Logout</span>
+        </div>
+      </div>
+    </aside>
+
+    <div class="main">
+      <header class="header">
+        <div class="search-wrap">
+          <i class="ti ti-search" aria-hidden="true"></i>
+          <input type="text" placeholder="Search threats, incidents, reports…" />
+        </div>
+        <div class="header-right">
+          <button class="notif-btn" aria-label="Notifications">
+            <i class="ti ti-bell" style="font-size:16px" aria-hidden="true"></i>
+            <span class="notif-dot"></span>
+          </button>
+          <div class="divider"></div>
+          <div class="user-chip">
+            <div class="user-info">
+              <div class="user-name">Admin User</div>
+              <div class="user-role">Security Manager</div>
+            </div>
+            <div class="avatar">AU</div>
+          </div>
+        </div>
+      </header>
+
+      <div class="content">
+
+        <!-- DASHBOARD -->
+        <div id="page-dashboard" class="page active">
+          <div class="page-head">
+            <div>
+              <div class="page-title">Security Operations</div>
+              <div class="page-sub">Real-time overview of your security posture</div>
+            </div>
+            <span style="font-size:10px;color:var(--muted);font-family:'Courier New',monospace">LIVE · 09:42 WAT</span>
+          </div>
+          <div class="stat-grid">
+            <div class="stat-card" style="border-left-color:#ef4444">
+              <div class="stat-icon" style="background:var(--red-dim)"><i class="ti ti-shield-exclamation" style="color:#f87171;font-size:18px" aria-hidden="true"></i></div>
+              <div>
+                <div class="stat-label">Open Incidents</div>
+                <div class="stat-value">12</div>
+              </div>
+            </div>
+            <div class="stat-card" style="border-left-color:#eab308">
+              <div class="stat-icon" style="background:var(--yellow-dim)"><i class="ti ti-alert-triangle" style="color:#facc15;font-size:18px" aria-hidden="true"></i></div>
+              <div>
+                <div class="stat-label">Pending Tasks</div>
+                <div class="stat-value">4</div>
+              </div>
+            </div>
+            <div class="stat-card" style="border-left-color:#22c55e">
+              <div class="stat-icon" style="background:var(--green-dim)"><i class="ti ti-checkbox" style="color:#4ade80;font-size:18px" aria-hidden="true"></i></div>
+              <div>
+                <div class="stat-label">Compliance Score</div>
+                <div class="stat-value">92%</div>
+              </div>
+            </div>
+            <div class="stat-card" style="border-left-color:var(--purple)">
+              <div class="stat-icon" style="background:var(--purple-dim)"><i class="ti ti-activity" style="color:#a78bfa;font-size:18px" aria-hidden="true"></i></div>
+              <div>
+                <div class="stat-label">System Health</div>
+                <div class="stat-value" style="font-size:14px;padding-top:4px">Optimal</div>
+              </div>
+            </div>
+          </div>
+          <div class="two-col">
+            <div class="card">
+              <div class="chart-placeholder">
+                <i class="ti ti-chart-line" aria-hidden="true"></i>
+                <span style="font-size:11px">Threat activity chart</span>
+                <span style="font-size:10px;color:rgba(113,113,122,0.5)">Connect data source to populate</span>
+              </div>
+            </div>
+            <div class="card">
+              <div class="section-title">Recent incidents</div>
+              <div class="incident-row">
+                <div style="display:flex;align-items:center;gap:10px">
+                  <div class="dot" style="background:#eab308"></div>
+                  <div>
+                    <div class="inc-title">Brute Force Attempt — Server Alpha</div>
+                    <div class="inc-meta">2 min ago · Tenant: Ministry of Finance</div>
+                  </div>
+                </div>
+                <span class="badge badge-review">Review</span>
+              </div>
+              <div class="incident-row">
+                <div style="display:flex;align-items:center;gap:10px">
+                  <div class="dot" style="background:#eab308"></div>
+                  <div>
+                    <div class="inc-title">Brute Force Attempt — Server Alpha</div>
+                    <div class="inc-meta">14 min ago · Tenant: CBN Systems</div>
+                  </div>
+                </div>
+                <span class="badge badge-review">Review</span>
+              </div>
+              <div class="incident-row">
+                <div style="display:flex;align-items:center;gap:10px">
+                  <div class="dot" style="background:#22c55e"></div>
+                  <div>
+                    <div class="inc-title">Brute Force Attempt — Server Alpha</div>
+                    <div class="inc-meta">1 hr ago · Tenant: NITDA Network</div>
+                  </div>
+                </div>
+                <span class="badge badge-resolved">Resolved</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- THREATS -->
+        <div id="page-threats" class="page">
+          <div class="page-head">
+            <div>
+              <div class="page-title">Threat Intelligence</div>
+              <div class="page-sub">Catalog and analyze active threat vectors targeting your infrastructure.</div>
+            </div>
+            <button class="btn-primary"><i class="ti ti-plus" aria-hidden="true"></i> Register Threat</button>
+          </div>
+          <div class="card">
+            <div class="filter-row">
+              <i class="ti ti-filter" style="color:var(--muted);font-size:13px" aria-hidden="true"></i>
+              <select class="filter-select"><option>All severities</option><option>Critical</option><option>High</option><option>Medium</option></select>
+              <select class="filter-select"><option>All types</option><option>Malware</option><option>Phishing</option><option>Brute Force</option></select>
+              <span class="count-chip">3 threats</span>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Threat identifier</th>
+                    <th>Type</th>
+                    <th>Severity</th>
+                    <th style="text-align:center">Incidents</th>
+                    <th>Last activity</th>
+                    <th style="text-align:right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <div style="display:flex;align-items:center;gap:10px">
+                        <div style="width:28px;height:28px;border-radius:5px;border:1px solid var(--border);background:var(--bg);display:flex;align-items:center;justify-content:center">
+                          <i class="ti ti-shield-exclamation" style="font-size:13px;color:var(--purple)" aria-hidden="true"></i>
+                        </div>
+                        <span style="color:#fff;font-weight:500">Advanced Persistent Threat — Region X</span>
+                      </div>
+                    </td>
+                    <td><span class="framework-tag">MALWARE</span></td>
+                    <td><span class="badge badge-critical">Critical</span></td>
+                    <td style="text-align:center;color:#fff">3</td>
+                    <td style="color:var(--muted)">Jun 15, 08:00</td>
+                    <td style="text-align:right"><div class="row-actions"><button class="icon-btn" aria-label="More actions"><i class="ti ti-dots-vertical" aria-hidden="true"></i></button></div></td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div style="display:flex;align-items:center;gap:10px">
+                        <div style="width:28px;height:28px;border-radius:5px;border:1px solid var(--border);background:var(--bg);display:flex;align-items:center;justify-content:center">
+                          <i class="ti ti-shield-exclamation" style="font-size:13px;color:var(--purple)" aria-hidden="true"></i>
+                        </div>
+                        <span style="color:#fff;font-weight:500">Phishing Campaign: Tax Refund</span>
+                      </div>
+                    </td>
+                    <td><span class="framework-tag">PHISHING</span></td>
+                    <td><span class="badge badge-high">High</span></td>
+                    <td style="text-align:center;color:#fff">12</td>
+                    <td style="color:var(--muted)">Jun 14, 14:20</td>
+                    <td style="text-align:right"><div class="row-actions"><button class="icon-btn" aria-label="More actions"><i class="ti ti-dots-vertical" aria-hidden="true"></i></button></div></td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div style="display:flex;align-items:center;gap:10px">
+                        <div style="width:28px;height:28px;border-radius:5px;border:1px solid var(--border);background:var(--bg);display:flex;align-items:center;justify-content:center">
+                          <i class="ti ti-shield-exclamation" style="font-size:13px;color:var(--purple)" aria-hidden="true"></i>
+                        </div>
+                        <span style="color:#fff;font-weight:500">Brute Force targeting Admin Panel</span>
+                      </div>
+                    </td>
+                    <td><span class="framework-tag">BRUTE_FORCE</span></td>
+                    <td><span class="badge badge-medium">Medium</span></td>
+                    <td style="text-align:center;color:#fff">1</td>
+                    <td style="color:var(--muted)">Jun 12, 11:00</td>
+                    <td style="text-align:right"><div class="row-actions"><button class="icon-btn" aria-label="More actions"><i class="ti ti-dots-vertical" aria-hidden="true"></i></button></div></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- INCIDENTS -->
+        <div id="page-incidents" class="page">
+          <div class="page-head">
+            <div>
+              <div class="page-title">Incident Response</div>
+              <div class="page-sub">Track and resolve security incidents across all managed environments.</div>
+            </div>
+            <button class="btn-primary"><i class="ti ti-plus" aria-hidden="true"></i> Create Incident</button>
+          </div>
+          <div class="card">
+            <div class="search-bar" style="margin-bottom:16px">
+              <i class="ti ti-search" aria-hidden="true"></i>
+              <input type="text" placeholder="Search incidents by title or ID…" />
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div class="incident-row" style="cursor:pointer">
+                <div style="display:flex;align-items:flex-start;gap:12px;flex:1">
+                  <i class="ti ti-alert-triangle" style="color:#facc15;font-size:16px;margin-top:1px;flex-shrink:0" aria-hidden="true"></i>
+                  <div style="flex:1">
+                    <div style="font-size:13px;font-weight:600;color:#fff">Unauthorized DB Access Attempt</div>
+                    <div style="font-size:10px;color:var(--muted);margin-top:3px;font-family:'Courier New',monospace;letter-spacing:.04em">ID: inc-1 · Threat: Brute Force targeting Admin Panel</div>
+                    <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+                      <span style="font-size:10px;color:var(--muted)">Jun 15, 18:00</span>
+                      <span class="action-link"><span>View timeline</span><i class="ti ti-external-link" style="font-size:10px" aria-hidden="true"></i></span>
+                    </div>
+                  </div>
+                </div>
+                <div style="flex-shrink:0;text-align:right;margin-left:16px">
+                  <span class="badge badge-investigating">Investigating</span>
+                </div>
+              </div>
+              <div class="incident-row">
+                <div style="display:flex;align-items:flex-start;gap:12px;flex:1">
+                  <i class="ti ti-alert-triangle" style="color:#60a5fa;font-size:16px;margin-top:1px;flex-shrink:0" aria-hidden="true"></i>
+                  <div style="flex:1">
+                    <div style="font-size:13px;font-weight:600;color:#fff">Large Data Export — Finance Segment</div>
+                    <div style="font-size:10px;color:var(--muted);margin-top:3px;font-family:'Courier New',monospace;letter-spacing:.04em">ID: inc-2 · Threat: N/A</div>
+                    <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+                      <span style="font-size:10px;color:var(--muted)">Jun 15, 12:00</span>
+                      <span class="action-link"><span>View timeline</span><i class="ti ti-external-link" style="font-size:10px" aria-hidden="true"></i></span>
+                    </div>
+                  </div>
+                </div>
+                <div style="flex-shrink:0;text-align:right;margin-left:16px">
+                  <span class="badge badge-contained">Contained</span>
+                </div>
+              </div>
+              <div class="incident-row">
+                <div style="display:flex;align-items:flex-start;gap:12px;flex:1">
+                  <i class="ti ti-alert-triangle" style="color:#4ade80;font-size:16px;margin-top:1px;flex-shrink:0" aria-hidden="true"></i>
+                  <div style="flex:1">
+                    <div style="font-size:13px;font-weight:600;color:#fff">Credential Stuffing detected</div>
+                    <div style="font-size:10px;color:var(--muted);margin-top:3px;font-family:'Courier New',monospace;letter-spacing:.04em">ID: inc-3 · Threat: Phishing Campaign: Tax Refund</div>
+                    <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+                      <span style="font-size:10px;color:var(--muted)">Jun 14, 09:15</span>
+                      <span class="action-link"><span>View timeline</span><i class="ti ti-external-link" style="font-size:10px" aria-hidden="true"></i></span>
+                    </div>
+                  </div>
+                </div>
+                <div style="flex-shrink:0;text-align:right;margin-left:16px">
+                  <span class="badge badge-resolved">Resolved</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- COMPLIANCE -->
+        <div id="page-compliance" class="page">
+          <div class="page-head">
+            <div>
+              <div class="page-title">Compliance Management</div>
+              <div class="page-sub">Monitor regulatory alignment across African jurisdictions.</div>
+            </div>
+            <button class="btn-primary"><i class="ti ti-plus" aria-hidden="true"></i> New Assessment</button>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px">
+            <div class="compliance-card">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px">
+                <div>
+                  <div style="font-size:13px;font-weight:600;color:#fff;line-height:1.3">Nigeria Data Protection Act (NDPA)</div>
+                  <div style="font-size:10px;color:var(--muted);margin-top:3px;text-transform:uppercase;letter-spacing:.08em">Nigeria</div>
+                </div>
+                <span class="badge badge-inprogress">In Progress</span>
+              </div>
+              <div style="margin-bottom:8px;display:flex;justify-content:space-between;align-items:center">
+                <span style="font-size:11px;color:var(--muted)">Compliance score</span>
+                <span class="score-text" style="font-size:16px">65%</span>
+              </div>
+              <div class="progress-bar"><div class="progress-fill" style="width:65%"></div></div>
+              <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+                <span style="font-size:10px;color:var(--muted)">Updated Jun 14</span>
+                <span class="action-link"><span>Open Tracker</span><i class="ti ti-external-link" style="font-size:10px" aria-hidden="true"></i></span>
+              </div>
+            </div>
+            <div class="compliance-card">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px">
+                <div>
+                  <div style="font-size:13px;font-weight:600;color:#fff;line-height:1.3">POPIA South Africa</div>
+                  <div style="font-size:10px;color:var(--muted);margin-top:3px;text-transform:uppercase;letter-spacing:.08em">South Africa</div>
+                </div>
+                <span class="badge badge-completed">Completed</span>
+              </div>
+              <div style="margin-bottom:8px;display:flex;justify-content:space-between;align-items:center">
+                <span style="font-size:11px;color:var(--muted)">Compliance score</span>
+                <span class="score-text" style="font-size:16px">98%</span>
+              </div>
+              <div class="progress-bar"><div class="progress-fill green" style="width:98%"></div></div>
+              <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+                <span style="font-size:10px;color:var(--muted)">Updated Jun 10</span>
+                <span class="action-link"><span>Open Tracker</span><i class="ti ti-external-link" style="font-size:10px" aria-hidden="true"></i></span>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="section-title">Regulatory frameworks</div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Framework name</th>
+                    <th>Jurisdiction</th>
+                    <th>Requirements</th>
+                    <th>Version</th>
+                    <th style="text-align:right">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="color:#fff">Nigeria Data Protection Act (NDPA)</td>
+                    <td style="color:var(--muted)">Nigeria</td>
+                    <td style="color:var(--muted)">42</td>
+                    <td style="color:var(--muted)">2023</td>
+                    <td style="text-align:right"><span class="action-link">Start</span></td>
+                  </tr>
+                  <tr>
+                    <td style="color:#fff">POPIA South Africa</td>
+                    <td style="color:var(--muted)">South Africa</td>
+                    <td style="color:var(--muted)">38</td>
+                    <td style="color:var(--muted)">2013</td>
+                    <td style="text-align:right"><span class="action-link">Start</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- REPORTS -->
+        <div id="page-reports" class="page">
+          <div class="page-head">
+            <div>
+              <div class="page-title">Reporting Center</div>
+              <div class="page-sub">Generate and export compliance, operational, and executive intelligence.</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px">
+            <div class="report-type-card report-exec">
+              <div>
+                <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+                  <div class="report-title">Executive Briefing</div>
+                  <i class="ti ti-chart-bar" style="color:var(--purple);font-size:16px" aria-hidden="true"></i>
+                </div>
+                <div class="report-desc">High-level threat matrix, compliance health score, and security maturity overview for stakeholders.</div>
+              </div>
+              <button class="btn-primary" style="font-size:10px;letter-spacing:.08em;padding:7px 10px">Generate Executive PDF</button>
+            </div>
+            <div class="report-type-card report-audit">
+              <div>
+                <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+                  <div class="report-title">Compliance Audit</div>
+                  <i class="ti ti-checkbox" style="color:#4ade80;font-size:16px" aria-hidden="true"></i>
+                </div>
+                <div class="report-desc">Detailed checklist reports mapping controls to NDPA or POPIA regulatory frameworks.</div>
+              </div>
+              <button style="display:inline-flex;align-items:center;gap:6px;padding:7px 10px;background:#166534;border:none;border-radius:6px;color:#4ade80;font-size:10px;font-weight:600;letter-spacing:.08em;cursor:pointer;width:100%;justify-content:center">Generate Audit Report</button>
+            </div>
+            <div class="report-type-card report-incident">
+              <div>
+                <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+                  <div class="report-title">Incident Timeline</div>
+                  <i class="ti ti-alert-triangle" style="color:#f87171;font-size:16px" aria-hidden="true"></i>
+                </div>
+                <div class="report-desc">Chronological breakdowns of incidents, response times, remediation steps, and AI post-mortems.</div>
+              </div>
+              <button style="display:inline-flex;align-items:center;gap:6px;padding:7px 10px;background:#7f1d1d;border:none;border-radius:6px;color:#f87171;font-size:10px;font-weight:600;letter-spacing:.08em;cursor:pointer;width:100%;justify-content:center">Export Incident Logs</button>
+            </div>
+          </div>
+          <div class="card">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+              <div class="section-title" style="margin:0">Export history</div>
+              <button class="icon-btn" aria-label="Refresh"><i class="ti ti-refresh" aria-hidden="true"></i></button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Report name</th>
+                    <th>Type</th>
+                    <th>Generated by</th>
+                    <th>Date</th>
+                    <th style="text-align:right">Download</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><div style="display:flex;align-items:center;gap:8px"><i class="ti ti-file-text" style="color:var(--purple);font-size:14px" aria-hidden="true"></i><span style="color:#fff;font-weight:500">Q2 Executive Cyber Security Report</span></div></td>
+                    <td><span class="framework-tag">EXECUTIVE</span></td>
+                    <td style="color:var(--muted)">Admin User</td>
+                    <td style="color:var(--muted)">Jun 15, 10:00</td>
+                    <td style="text-align:right"><button class="icon-btn" aria-label="Download"><i class="ti ti-download" aria-hidden="true"></i></button></td>
+                  </tr>
+                  <tr>
+                    <td><div style="display:flex;align-items:center;gap:8px"><i class="ti ti-file-text" style="color:var(--purple);font-size:14px" aria-hidden="true"></i><span style="color:#fff;font-weight:500">NDPA Compliance Gap Analysis</span></div></td>
+                    <td><span class="framework-tag">COMPLIANCE</span></td>
+                    <td style="color:var(--muted)">Admin User</td>
+                    <td style="color:var(--muted)">Jun 12, 14:30</td>
+                    <td style="text-align:right"><button class="icon-btn" aria-label="Download"><i class="ti ti-download" aria-hidden="true"></i></button></td>
+                  </tr>
+                  <tr>
+                    <td><div style="display:flex;align-items:center;gap:8px"><i class="ti ti-file-text" style="color:var(--purple);font-size:14px" aria-hidden="true"></i><span style="color:#fff;font-weight:500">Incident Timeline: Ransomware Simulation</span></div></td>
+                    <td><span class="framework-tag">INCIDENT</span></td>
+                    <td style="color:var(--muted)">Sec Manager</td>
+                    <td style="color:var(--muted)">Jun 8, 09:15</td>
+                    <td style="text-align:right"><button class="icon-btn" aria-label="Download"><i class="ti ti-download" aria-hidden="true"></i></button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- SETTINGS -->
+        <div id="page-settings" class="page">
+          <div class="page-head">
+            <div>
+              <div class="page-title">Settings</div>
+              <div class="page-sub">Manage your account and organization preferences.</div>
+            </div>
+          </div>
+          <div class="demo-notice">
+            <i class="ti ti-info-circle" style="font-size:15px;flex-shrink:0" aria-hidden="true"></i>
+            Settings module — connect to Prisma/Supabase to enable live data.
+          </div>
+          <div class="card">
+            <div class="section-title">Profile information</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+              <div>
+                <div class="form-label">Full name</div>
+                <input style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-size:12px;outline:none" value="Admin User" />
+              </div>
+              <div>
+                <div class="form-label">Email address</div>
+                <input style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-size:12px;outline:none" value="admin@fortressafrica.com" />
+              </div>
+              <div>
+                <div class="form-label">Role</div>
+                <input style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--muted);font-size:12px;outline:none" value="Security Manager" disabled />
+              </div>
+              <div>
+                <div class="form-label">Timezone</div>
+                <select class="filter-select" style="width:100%;padding:8px 10px"><option>Africa/Lagos (GMT+1)</option><option>Africa/Nairobi (GMT+3)</option><option>Africa/Lusaka (GMT+2)</option></select>
+              </div>
+            </div>
+            <div style="margin-top:16px;display:flex;justify-content:flex-end">
+              <button class="btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function switchPage(id,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  el.classList.add('active');
+}
+function showApp(){
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('app').style.display='block';
+}
+function showLogin(){
+  document.getElementById('app').style.display='none';
+  document.getElementById('login-screen').style.display='flex';
+}
+</script>

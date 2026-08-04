@@ -1,0 +1,204 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Role {
+  SUPER_ADMIN
+  TENANT_ADMIN
+  SECURITY_MANAGER
+  ANALYST
+  VIEWER
+}
+
+enum ThreatType {
+  PHISHING
+  MALWARE
+  RANSOMWARE
+  DDOS
+  BRUTE_FORCE
+  SQL_INJECTION
+  XSS
+  ZERO_DAY
+}
+
+enum IncidentStatus {
+  OPEN
+  INVESTIGATING
+  CONTAINED
+  RESOLVED
+  CLOSED
+}
+
+model Tenant {
+  id          String   @id @default(cuid())
+  name        String
+  domain      String?  @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  users       User[]
+  threats     Threat[]
+  incidents   Incident[]
+  auditLogs   AuditLog[]
+  subscriptions Subscription[]
+  assessments  ComplianceAssessment[]
+  reports      Report[]
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  passwordHash  String
+  name          String?
+  role          Role      @default(VIEWER)
+  tenantId      String
+  tenant        Tenant    @relation(fields: [tenantId], references: [id])
+  mfaEnabled    Boolean   @default(false)
+  mfaSecret     String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  auditLogs     AuditLog[]
+  reports       Report[]
+}
+
+model Threat {
+  id          String     @id @default(cuid())
+  type        ThreatType
+  title       String
+  description String
+  severity    String     // LOW, MEDIUM, HIGH, CRITICAL
+  tenantId    String
+  tenant      Tenant     @relation(fields: [tenantId], references: [id])
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  incidents   Incident[]
+}
+
+model Incident {
+  id          String         @id @default(cuid())
+  title       String
+  status      IncidentStatus @default(OPEN)
+  threatId    String?
+  threat      Threat?        @relation(fields: [threatId], references: [id])
+  tenantId    String
+  tenant      Tenant         @relation(fields: [tenantId], references: [id])
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  action    String
+  entity    String
+  entityId  String
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  tenantId  String
+  tenant    Tenant   @relation(fields: [tenantId], references: [id])
+  metadata  Json?
+  timestamp DateTime @default(now())
+}
+
+model LoginAttempt {
+  id        String   @id @default(cuid())
+  email     String
+  ip        String?
+  success   Boolean
+  createdAt DateTime @default(now())
+
+  @@index([email, createdAt])
+}
+
+model Subscription {
+  id        String   @id @default(cuid())
+  tenantId  String
+  tenant    Tenant   @relation(fields: [tenantId], references: [id])
+  plan      String   // PHASE_1_PILOT, ENTERPRISE, etc.
+  active    Boolean  @default(true)
+  expiresAt DateTime?
+}
+
+model ComplianceFramework {
+  id           String    @id @default(cuid())
+  name         String    // e.g., "Nigeria Data Protection Act (NDPA)"
+  version      String
+  jurisdiction String    // e.g., "Nigeria", "South Africa", "African Union"
+  description  String
+  requirements ComplianceRequirement[]
+  assessments  ComplianceAssessment[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model ComplianceRequirement {
+  id          String   @id @default(cuid())
+  code        String   // e.g., "SEC-01"
+  title       String
+  description String
+  frameworkId String
+  framework   ComplianceFramework @relation(fields: [frameworkId], references: [id])
+  responses   ComplianceResponse[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model ComplianceAssessment {
+  id          String   @id @default(cuid())
+  tenantId    String
+  tenant      Tenant   @relation(fields: [tenantId], references: [id])
+  frameworkId String
+  framework   ComplianceFramework @relation(fields: [frameworkId], references: [id])
+  status      String   // IN_PROGRESS, COMPLETED, EXPIRED
+  score       Float    @default(0)
+  responses   ComplianceResponse[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model ComplianceResponse {
+  id            String   @id @default(cuid())
+  assessmentId  String
+  assessment    ComplianceAssessment @relation(fields: [assessmentId], references: [id])
+  requirementId String
+  requirement   ComplianceRequirement @relation(fields: [requirementId], references: [id])
+  status        ComplianceStatus @default(NOT_STARTED)
+  notes         String?
+  evidenceUrl   String?
+  updatedById   String?
+  updatedAt     DateTime @updatedAt
+}
+
+model Report {
+  id        String   @id @default(cuid())
+  title     String
+  type      ReportType
+  format    String   // PDF, CSV, etc.
+  url       String?
+  tenantId  String
+  tenant    Tenant   @relation(fields: [tenantId], references: [id])
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  metadata  Json?
+}
+
+enum ReportType {
+  COMPLIANCE
+  INCIDENT
+  EXECUTIVE
+  THREAT_INTELLIGENCE
+}
+
+enum ComplianceStatus {
+  NOT_STARTED
+  COMPLIANT
+  NON_COMPLIANT
+  IN_PROGRESS
+  NOT_APPLICABLE
+}
