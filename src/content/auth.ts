@@ -17,27 +17,6 @@ export const LOGIN_CONTENT = {
     needHelp: "Need help?",
     contactSupport: "Contact support",
   },
-  
-  demoCredentials: {
-    heading: "Demo Credentials",
-    accounts: [
-      {
-        role: "Super Admin",
-        email: "admin@fortressafrica.com",
-        password: "FortressAdmin123!",
-      },
-      {
-        role: "Security Analyst",
-        email: "analyst@fortressafrica.com",
-        password: "Analyst123!",
-      },
-      {
-        role: "Viewer",
-        email: "viewer@securebank.ng",
-        password: "Viewer123!",
-      },
-    ],
-  },
 };
 
 export const REGISTER_CONTENT = {
