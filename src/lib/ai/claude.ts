@@ -23,7 +23,7 @@ const INCIDENT_ANALYSIS_JSON_SCHEMA = {
   additionalProperties: false,
 };
 
-type IncidentForAnalysis = {
+export type IncidentForAnalysis = {
   title: string;
   status: string;
   createdAt: Date;
@@ -35,29 +35,38 @@ type IncidentForAnalysis = {
   } | null;
 };
 
+// Exported so the training-data generation script (scripts/generate-training-data.ts)
+// builds the exact same prompts the production API routes send — a fine-tuned model
+// trained on drifted prompts would learn the wrong input distribution.
+export const INCIDENT_ANALYSIS_SYSTEM_PROMPT =
+  "You are a security operations analyst assistant for URUU, a cybersecurity SOC platform. " +
+  "Analyze the given incident and produce a concise, actionable summary, concrete recommendations, " +
+  "and a risk level. Base your analysis strictly on the incident data provided — do not invent " +
+  "details that aren't present.";
+
+export function buildIncidentAnalysisUserContent(incident: IncidentForAnalysis): string {
+  return `Analyze this security incident:\n\n${JSON.stringify(
+    {
+      title: incident.title,
+      status: incident.status,
+      createdAt: incident.createdAt,
+      threat: incident.threat,
+    },
+    null,
+    2
+  )}`;
+}
+
 export async function summarizeIncident(incident: IncidentForAnalysis) {
   const response = await client.messages.create({
     model: "claude-sonnet-5",
     max_tokens: 4096,
     thinking: { type: "adaptive" },
-    system:
-      "You are a security operations analyst assistant for URUU, a cybersecurity SOC platform. " +
-      "Analyze the given incident and produce a concise, actionable summary, concrete recommendations, " +
-      "and a risk level. Base your analysis strictly on the incident data provided — do not invent " +
-      "details that aren't present.",
+    system: INCIDENT_ANALYSIS_SYSTEM_PROMPT,
     messages: [
       {
         role: "user",
-        content: `Analyze this security incident:\n\n${JSON.stringify(
-          {
-            title: incident.title,
-            status: incident.status,
-            createdAt: incident.createdAt,
-            threat: incident.threat,
-          },
-          null,
-          2
-        )}`,
+        content: buildIncidentAnalysisUserContent(incident),
       },
     ],
     output_config: {
@@ -90,7 +99,7 @@ const COMPLIANCE_GUIDANCE_JSON_SCHEMA = {
   additionalProperties: false,
 };
 
-type ComplianceGuidanceInput = {
+export type ComplianceGuidanceInput = {
   framework: { name: string; jurisdiction: string };
   outstandingRequirements: {
     code: string;
@@ -105,26 +114,32 @@ type ComplianceGuidanceInput = {
   };
 };
 
+export const COMPLIANCE_GUIDANCE_SYSTEM_PROMPT =
+  "You are a compliance advisor for URUU, a cybersecurity SOC platform serving African governments and " +
+  "critical infrastructure operators. Given a tenant's outstanding (not-yet-compliant) requirements for a " +
+  "regulatory framework, plus real current security signals for that tenant, recommend which single " +
+  "requirement to prioritize next and why, with concrete next steps. Base your reasoning strictly on the " +
+  "data provided — never invent incidents, statistics, or evidence that isn't in the input. " +
+  "priorityRequirementCode must exactly match one of the provided requirement codes.";
+
+export function buildComplianceGuidanceUserContent(input: ComplianceGuidanceInput): string {
+  return `Framework: ${input.framework.name} (${input.framework.jurisdiction})\n\nOutstanding requirements:\n${JSON.stringify(
+    input.outstandingRequirements,
+    null,
+    2
+  )}\n\nCurrent security signals for this tenant:\n${JSON.stringify(input.securitySignals, null, 2)}`;
+}
+
 export async function generateComplianceGuidance(input: ComplianceGuidanceInput) {
   const response = await client.messages.create({
     model: "claude-sonnet-5",
     max_tokens: 4096,
     thinking: { type: "adaptive" },
-    system:
-      "You are a compliance advisor for URUU, a cybersecurity SOC platform serving African governments and " +
-      "critical infrastructure operators. Given a tenant's outstanding (not-yet-compliant) requirements for a " +
-      "regulatory framework, plus real current security signals for that tenant, recommend which single " +
-      "requirement to prioritize next and why, with concrete next steps. Base your reasoning strictly on the " +
-      "data provided — never invent incidents, statistics, or evidence that isn't in the input. " +
-      "priorityRequirementCode must exactly match one of the provided requirement codes.",
+    system: COMPLIANCE_GUIDANCE_SYSTEM_PROMPT,
     messages: [
       {
         role: "user",
-        content: `Framework: ${input.framework.name} (${input.framework.jurisdiction})\n\nOutstanding requirements:\n${JSON.stringify(
-          input.outstandingRequirements,
-          null,
-          2
-        )}\n\nCurrent security signals for this tenant:\n${JSON.stringify(input.securitySignals, null, 2)}`,
+        content: buildComplianceGuidanceUserContent(input),
       },
     ],
     output_config: {

@@ -10,7 +10,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "generate-training-data": "tsx --env-file=.env scripts/generate-training-data.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.113.0",

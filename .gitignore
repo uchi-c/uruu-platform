@@ -32,3 +32,6 @@ prisma/*.db
 
 .vercel
 .env*
+
+# generated training data (regenerable via scripts/generate-training-data.ts)
+/training-data/
