@@ -1,46 +1,43 @@
 export const BRAND_CONTENT = {
   appName: "URUU",
-  companyName: "FORTRESS AFRICA",
-  
+  companyName: "SHADOW ROOT SECURITY TECHNOLOGIES",
+
   taglines: {
-    main: "Securing Africa's Digital Future",
-    short: "African Cybersecurity Platform",
-    technical: "AI-Powered Security Operations Platform",
+    main: "Digital Trust • Secure Systems • Institutional Intelligence",
+    short: "Digital Trust & Secure Systems",
+    technical: "Secure Workflow & Intelligence Platform",
   },
-  
+
   descriptions: {
-    oneLiner: "End-to-end cybersecurity operations platform built for African organizations",
-    
-    elevator: "URUU helps African businesses detect, respond to, and prevent cyber threats with AI-powered tools designed for our unique infrastructure and threat landscape.",
-    
-    full: "URUU is a comprehensive cybersecurity operations platform built specifically for African organizations. We combine AI-powered threat detection, incident response, risk management, and compliance tracking into one unified platform - designed to work seamlessly with African infrastructure and regulatory frameworks.",
+    oneLiner: "A Zambia-based digital trust and secure systems company focused on stronger workflows, more reliable reporting, and trusted digital operations.",
+
+    elevator: "To help institutions build stronger digital trust through secure systems, structured workflows, and practical intelligence tools.",
+
+    full: "Shadow Root Security Technologies is a Zambia-based digital trust and secure systems company focused on helping institutions strengthen workflows, improve reporting discipline, and build more reliable digital operations. Through practical service delivery and long-term platform development, the company combines governance-aware execution with innovation, positioning URUU as its flagship secure workflow and intelligence platform for institutional environments.",
   },
-  
+
   valueProps: [
-    "Built for African infrastructure",
-    "70% cheaper than Western alternatives",
-    "AI-powered threat detection",
-    "Local compliance (NDPR, POPIA)",
-    "Works on low bandwidth",
-    "24/7 African support",
+    "Governance-aware execution",
+    "Practical value delivered now",
+    "Structured workflow & reporting discipline",
+    "Trust-sensitive process control",
+    "Local relevance across Africa",
+    "Institutional intelligence platform",
   ],
 };
 
 export const ABOUT_CONTENT = {
-  heading: "About FORTRESS AFRICA",
-  fullText: `FORTRESS AFRICA is a Zambian cybersecurity company on a mission to protect Africa's digital transformation. Founded in 2026, we recognized that African organizations face unique cybersecurity challenges that Western solutions don't address.
+  heading: "About Shadow Root Security Technologies",
+  fullText: `Shadow Root Security Technologies is a Zambia-based digital trust and secure systems company focused on helping institutions strengthen workflows, improve reporting discipline, and build more reliable digital operations.
 
-Our flagship product, URUU, is the first security operations platform designed from the ground up for the African market. We understand:
-- Limited cybersecurity budgets
-- Low-bandwidth environments
-- Local regulatory requirements (NDPR, POPIA, etc.)
-- African-specific threat vectors
-- Need for local language support
+Through practical service delivery and long-term platform development, the company combines governance-aware execution with innovation, positioning URUU as its flagship secure workflow and intelligence platform for institutional environments.
 
-We're building the security infrastructure that will power Africa's digital future.`,
+Mission: To help institutions build stronger digital trust through secure systems, structured workflows, and practical intelligence tools.
+
+Vision: To become a leading African builder of secure workflow, digital trust, and institutional intelligence platforms.
+
+Shadow Root works with institutions where digital trust, structured workflows, reporting discipline, and governance matter — government, education, and NGOs — combining local relevance with governance-aware, practical delivery.`,
   footer: {
-    registered: "PACRA, Zambia",
-    headquarters: "Lusaka, Zambia",
-    coverage: "Nigeria, Kenya, South Africa, Zambia, Ghana",
-  }
+    base: "Zambia / Africa",
+  },
 };

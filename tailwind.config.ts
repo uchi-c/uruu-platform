@@ -10,7 +10,7 @@ const config: Config = {
     extend: {
       colors: {
         shadow: {
-          purple: "#6C00FF",
+          purple: "#7C3AED",
           dark: "#0A0A0B",
           card: "#141417",
           border: "#2A2A2E",

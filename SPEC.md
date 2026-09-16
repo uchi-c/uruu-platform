@@ -1,10 +1,10 @@
 # URUU Platform Specification - Shadow Root Security Technologies
 
 ## Overview
-**URUU** is the core cyber operations, compliance, and threat intelligence platform under Shadow Root Security Technologies' **FORTRESS AFRICA** brand, targeting African governments and critical infrastructure operators.
+**URUU** is Shadow Root Security Technologies' flagship secure workflow and intelligence platform, targeting institutional environments — government, education, and NGOs — across Africa.
 
 ## Brand Identity
-- **Primary Accent:** Shadow Purple `#6C00FF`
+- **Primary Accent:** Shadow Purple `#7C3AED`
 - **Visual Identity:** Dark SOC command-center aesthetic, high-contrast, enterprise-grade.
 - **Tone:** Precise, authoritative ("We start in the shadows. We bring threats to light.")
 - **Multi-tenancy:** Supports direct enterprise clients and government Phase 1 pilots.

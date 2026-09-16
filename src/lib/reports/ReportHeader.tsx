@@ -15,7 +15,7 @@ export function ReportHeader({
 }) {
   return (
     <View style={styles.headerBar}>
-      <Text style={styles.brand}>URUU — FORTRESS AFRICA</Text>
+      <Text style={styles.brand}>URUU — SHADOW ROOT SECURITY TECHNOLOGIES</Text>
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.subtitle}>{subtitle}</Text>
       <Text style={styles.meta}>

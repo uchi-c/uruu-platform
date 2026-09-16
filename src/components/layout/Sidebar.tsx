@@ -29,12 +29,12 @@ export default function Sidebar() {
   return (
     <aside className="w-[220px] bg-[#141417] border-r border-[#2A2A2E] flex flex-col flex-shrink-0 h-full relative z-20">
       <div className="p-[20px_16px] border-b border-[#2A2A2E] flex items-center gap-[10px]">
-        <div className="w-[30px] height-[30px] bg-[#7C3AED] rounded-[6px] flex items-center justify-center text-[13px] font-bold text-white tracking-[0.05em] flex-shrink-0">
+        <div className="w-[30px] h-[30px] bg-[#7C3AED] rounded-[6px] flex items-center justify-center text-[13px] font-bold text-white tracking-[0.05em] flex-shrink-0">
           {BRAND_CONTENT.appName.charAt(0)}
         </div>
         <div>
           <div className="text-[14px] font-bold tracking-[0.18em] text-white font-mono uppercase">{BRAND_CONTENT.appName}</div>
-          <div className="text-[9px] color-[#71717A] tracking-[0.12em] uppercase mt-[1px]">Fortress Africa</div>
+          <div className="text-[9px] color-[#71717A] tracking-[0.12em] uppercase mt-[1px]">Shadow Root Security</div>
         </div>
       </div>
       

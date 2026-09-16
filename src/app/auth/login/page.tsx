@@ -140,7 +140,7 @@ function LoginForm() {
               {BRAND_CONTENT.appName} <span className="text-[#7C3AED]">ACCESS</span>
             </div>
             <div className="w-[40px] h-[2px] bg-[#7C3AED] rounded-[1px] m-[10px_auto_8px]"></div>
-            <div className="text-[10px] text-[#71717A] tracking-[0.15em] uppercase">Fortress Africa Operations</div>
+            <div className="text-[10px] text-[#71717A] tracking-[0.15em] uppercase">Shadow Root Operations</div>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-[18px]">

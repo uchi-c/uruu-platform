@@ -9,13 +9,13 @@ export const styles = StyleSheet.create({
   },
   headerBar: {
     borderBottomWidth: 2,
-    borderBottomColor: "#6C00FF",
+    borderBottomColor: "#7C3AED",
     paddingBottom: 12,
     marginBottom: 20,
   },
   brand: {
     fontSize: 9,
-    color: "#6C00FF",
+    color: "#7C3AED",
     fontFamily: "Helvetica-Bold",
     letterSpacing: 1,
     marginBottom: 4,
@@ -94,7 +94,7 @@ export const styles = StyleSheet.create({
   tableHeaderCell: {
     fontSize: 7,
     fontFamily: "Helvetica-Bold",
-    color: "#6C00FF",
+    color: "#7C3AED",
     textTransform: "uppercase",
   },
   tableCell: {

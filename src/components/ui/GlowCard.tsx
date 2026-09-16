@@ -7,7 +7,7 @@ interface GlowCardProps {
   accentColor?: string;
 }
 
-export function GlowCard({ children, className, accentColor = "#6C00FF" }: GlowCardProps) {
+export function GlowCard({ children, className, accentColor = "#7C3AED" }: GlowCardProps) {
   return (
     <div 
       className={cn(

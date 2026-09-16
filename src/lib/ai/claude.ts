@@ -37,7 +37,7 @@ type IncidentForAnalysis = {
 
 export async function summarizeIncident(incident: IncidentForAnalysis) {
   const response = await client.messages.create({
-    model: "claude-opus-4-8",
+    model: "claude-sonnet-5",
     max_tokens: 4096,
     thinking: { type: "adaptive" },
     system:
@@ -107,7 +107,7 @@ type ComplianceGuidanceInput = {
 
 export async function generateComplianceGuidance(input: ComplianceGuidanceInput) {
   const response = await client.messages.create({
-    model: "claude-opus-4-8",
+    model: "claude-sonnet-5",
     max_tokens: 4096,
     thinking: { type: "adaptive" },
     system:
