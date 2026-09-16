@@ -1,0 +1,22 @@
+# Uruu manifest — every observer, trigger, and tool the system runs, toggleable.
+# Nothing runs unless it is declared here. This file is the single source of
+# truth for what Uruu is allowed to do (see CLAUDE.md, constraint 5).
+
+llm:
+  # backend: local | hf-endpoint | claude
+  #   local       — Ollama, served at `host`. The default chat path. (Phase 0)
+  #   hf-endpoint — Hugging Face Inference Endpoints. Not implemented yet. (Phase 3+)
+  #   claude      — reserved for consolidate.ts's escalation call only, never
+  #                 the default chat path. Not implemented yet. (Phase 1+)
+  backend: local
+  model: qwen2.5:1.5b-instruct
+  host: http://localhost:11434
+
+# Phase 1+: one entry per passive signal collector (e.g. git activity).
+observers: []
+
+# Phase 3+: schedule- or event-based proactive checks.
+triggers: []
+
+# Phase 2+: permissioned add-ons (task capture, calendar, email drafting, ...).
+tools: []

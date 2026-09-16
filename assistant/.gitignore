@@ -1,0 +1,18 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+*.tsbuildinfo
+
+# env files (contain secrets)
+.env
+.env.local
+
+# personal memory data — local-first, never committed. Lives outside src/
+# and dist/ on purpose so a build/clean can never touch it (see src/core/paths.ts).
+data/
+
+# misc
+.DS_Store
+npm-debug.log*
