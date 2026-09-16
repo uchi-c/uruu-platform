@@ -146,13 +146,13 @@ export default function ReportsPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-[14px] mb-[20px]">
         {REPORT_KINDS.map((kind) => (
-          <div key={kind.key} className="bg-[#141417] border border-[#2A2A2E] rounded-[8px] p-[18px] flex flex-col justify-between h-[172px] relative overflow-hidden before:absolute before:left-0 before:top-0 before:bottom-0 before:width-[3px]" style={{ borderLeftColor: kind.accent, borderLeftWidth: 3 }}>
+          <div key={kind.key} className="bg-[#141417] border border-[#2A2A2E] rounded-[8px] p-[18px] flex flex-col justify-between h-[172px] relative overflow-hidden" style={{ borderLeftColor: kind.accent, borderLeftWidth: 3 }}>
             <div>
               <div className="flex justify-between items-start mb-[8px]">
                 <div className="text-[13px] font-semibold text-white">{kind.title}</div>
                 <kind.icon className="w-[16px] h-[16px]" style={{ color: kind.iconColor ?? kind.accent }} />
               </div>
-              <div className="text-[11px] text-[#71717A] line-height-[1.5]">{kind.description}</div>
+              <div className="text-[11px] text-[#71717A] leading-[1.5]">{kind.description}</div>
             </div>
             <button
               className={`${kind.buttonClass} disabled:opacity-60 disabled:cursor-not-allowed`}

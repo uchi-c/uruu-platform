@@ -106,7 +106,7 @@ export default function DashboardPage() {
             </div>
             <div>
               <div className="text-[10px] text-[#71717A] uppercase tracking-[0.08em] font-semibold">{stat.label}</div>
-              <div className="text-[22px] font-bold text-white line-height-[1.1] mt-[2px]">{stat.value}</div>
+              <div className="text-[22px] font-bold text-white leading-[1.1] mt-[2px]">{stat.value}</div>
             </div>
           </div>
         ))}

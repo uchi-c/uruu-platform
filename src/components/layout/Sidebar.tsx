@@ -34,7 +34,7 @@ export default function Sidebar() {
         </div>
         <div>
           <div className="text-[14px] font-bold tracking-[0.18em] text-white font-mono uppercase">{BRAND_CONTENT.appName}</div>
-          <div className="text-[9px] color-[#71717A] tracking-[0.12em] uppercase mt-[1px]">Shadow Root Security</div>
+          <div className="text-[9px] text-[#71717A] tracking-[0.12em] uppercase mt-[1px]">Shadow Root Security</div>
         </div>
       </div>
       

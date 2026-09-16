@@ -87,14 +87,14 @@ export default function AssessmentDetailPage() {
 
   return (
     <DashboardLayout>
-      <div className="space-y-6">
-        <div className="flex items-center space-x-4">
-          <Link href="/dashboard/compliance" className="p-2 bg-shadow-card border border-shadow-border rounded hover:border-shadow-purple transition-colors">
-            <ChevronLeft className="w-4 h-4 text-white" />
+      <div className="space-y-[20px]">
+        <div className="flex items-center gap-[14px]">
+          <Link href="/dashboard/compliance" className="p-[8px] bg-[#141417] border border-[#2A2A2E] rounded-[6px] hover:border-[#7C3AED] transition-colors">
+            <ChevronLeft className="w-[16px] h-[16px] text-white" />
           </Link>
           <div>
-            <h1 className="text-2xl font-bold text-white">{assessment?.framework.name ?? (error ? 'Assessment' : 'Loading...')}</h1>
-            <p className="text-shadow-muted text-sm mt-0.5">Assessment Progress Tracking</p>
+            <h1 className="text-[18px] font-bold text-white tracking-[-0.01em]">{assessment?.framework.name ?? (error ? 'Assessment' : 'Loading...')}</h1>
+            <p className="text-[12px] text-[#71717A] mt-[3px]">Assessment Progress Tracking</p>
           </div>
         </div>
 
@@ -105,28 +105,28 @@ export default function AssessmentDetailPage() {
         )}
 
         {assessment && summary && (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2 space-y-4">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-[16px]">
+            <div className="lg:col-span-2 space-y-[14px]">
               {assessment.responses.map((res) => {
                 const draft = drafts[res.id] ?? { status: res.status, notes: '', evidenceUrl: '' };
                 return (
-                  <div key={res.id} className="soc-card space-y-4 hover:border-shadow-purple transition-colors group">
+                  <div key={res.id} className="card-refined space-y-[14px]">
                     <div className="flex justify-between items-start">
                       <div>
-                        <div className="flex items-center space-x-2">
-                          <span className="text-shadow-purple font-mono text-xs font-bold">{res.requirement.code}</span>
-                          <h4 className="text-white font-semibold">{res.requirement.title}</h4>
+                        <div className="flex items-center gap-[8px]">
+                          <span className="text-[#7C3AED] font-mono text-[11px] font-bold">{res.requirement.code}</span>
+                          <h4 className="text-white font-semibold text-[13px]">{res.requirement.title}</h4>
                         </div>
-                        <p className="text-sm text-shadow-muted mt-2">{res.requirement.description}</p>
+                        <p className="text-[12px] text-[#71717A] mt-[8px]">{res.requirement.description}</p>
                       </div>
                       <ComplianceStatusBadge status={res.status as any} />
                     </div>
 
-                    <div className="pt-4 border-t border-shadow-border flex flex-col space-y-4">
+                    <div className="pt-[14px] border-t border-[#2A2A2E] flex flex-col space-y-[14px]">
                       <div>
-                        <label className="text-xs text-shadow-muted uppercase font-bold">Status</label>
+                        <label className="text-[10px] text-[#71717A] uppercase font-bold tracking-[0.09em]">Status</label>
                         <select
-                          className="w-full bg-shadow-dark border border-shadow-border rounded-md mt-1 p-2 text-sm text-white focus:outline-none focus:border-shadow-purple"
+                          className="w-full bg-[#0A0A0B] border border-[#2A2A2E] rounded-[6px] mt-[6px] p-[8px_10px] text-[12px] text-white outline-none focus:border-[#7C3AED]"
                           value={draft.status}
                           onChange={(e) => setDrafts({ ...drafts, [res.id]: { ...draft, status: e.target.value } })}
                         >
@@ -134,19 +134,19 @@ export default function AssessmentDetailPage() {
                         </select>
                       </div>
                       <div>
-                        <label className="text-xs text-shadow-muted uppercase font-bold">Implementation Notes</label>
+                        <label className="text-[10px] text-[#71717A] uppercase font-bold tracking-[0.09em]">Implementation Notes</label>
                         <textarea
-                          className="w-full bg-shadow-dark border border-shadow-border rounded-md mt-1 p-3 text-sm text-white focus:outline-none focus:border-shadow-purple min-h-[80px]"
+                          className="w-full bg-[#0A0A0B] border border-[#2A2A2E] rounded-[6px] mt-[6px] p-[10px_12px] text-[12px] text-white outline-none focus:border-[#7C3AED] min-h-[80px]"
                           placeholder="Describe how this requirement is met..."
                           value={draft.notes}
                           onChange={(e) => setDrafts({ ...drafts, [res.id]: { ...draft, notes: e.target.value } })}
                         ></textarea>
                       </div>
                       <div>
-                        <label className="text-xs text-shadow-muted uppercase font-bold">Evidence URL</label>
+                        <label className="text-[10px] text-[#71717A] uppercase font-bold tracking-[0.09em]">Evidence URL</label>
                         <input
                           type="text"
-                          className="w-full bg-shadow-dark border border-shadow-border rounded-md mt-1 p-2 text-sm text-white focus:outline-none focus:border-shadow-purple"
+                          className="w-full bg-[#0A0A0B] border border-[#2A2A2E] rounded-[6px] mt-[6px] p-[8px_10px] text-[12px] text-white outline-none focus:border-[#7C3AED]"
                           placeholder="https://…"
                           value={draft.evidenceUrl}
                           onChange={(e) => setDrafts({ ...drafts, [res.id]: { ...draft, evidenceUrl: e.target.value } })}
@@ -157,9 +157,9 @@ export default function AssessmentDetailPage() {
                         <button
                           disabled={savingId === res.id}
                           onClick={() => handleSave(res.id)}
-                          className="flex items-center space-x-2 bg-shadow-purple/10 hover:bg-shadow-purple/20 text-shadow-purple px-4 py-2 rounded text-xs font-bold transition-colors disabled:opacity-50"
+                          className="inline-flex items-center gap-[6px] bg-[rgba(124,58,237,0.1)] hover:bg-[rgba(124,58,237,0.2)] text-[#7C3AED] px-[14px] py-[8px] rounded-[6px] text-[11px] font-bold transition-colors disabled:opacity-50"
                         >
-                          <Save className="w-3 h-3" />
+                          <Save className="w-[12px] h-[12px]" />
                           <span>{savingId === res.id ? 'Saving...' : 'Save Progress'}</span>
                         </button>
                       </div>
@@ -169,50 +169,50 @@ export default function AssessmentDetailPage() {
               })}
             </div>
 
-            <div className="space-y-6">
-              <div className="soc-card">
-                <h3 className="text-lg font-semibold text-white mb-4">Assessment Summary</h3>
-                <div className="space-y-4">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-shadow-muted">Requirements decided</span>
+            <div className="space-y-[16px]">
+              <div className="card-refined">
+                <h3 className="text-[14px] font-semibold text-white mb-[14px]">Assessment Summary</h3>
+                <div className="space-y-[14px]">
+                  <div className="flex justify-between text-[12px]">
+                    <span className="text-[#71717A]">Requirements decided</span>
                     <span className="text-white font-bold">{summary.completion}%</span>
                   </div>
-                  <div className="w-full bg-shadow-dark rounded-full h-2 overflow-hidden border border-shadow-border">
-                    <div className="bg-shadow-purple h-full" style={{ width: `${summary.completion}%` }}></div>
+                  <div className="w-full bg-[#0A0A0B] rounded-full h-[8px] overflow-hidden border border-[#2A2A2E]">
+                    <div className="bg-[#7C3AED] h-full" style={{ width: `${summary.completion}%` }}></div>
                   </div>
-                  <div className="flex justify-between text-sm pt-2 border-t border-shadow-border">
-                    <span className="text-shadow-muted">Compliance score</span>
+                  <div className="flex justify-between text-[12px] pt-[8px] border-t border-[#2A2A2E]">
+                    <span className="text-[#71717A]">Compliance score</span>
                     <span className="text-white font-bold">{assessment.score}%</span>
                   </div>
 
-                  <div className="pt-2 space-y-2">
-                    <div className="flex justify-between text-xs">
-                      <span className="text-green-500">Compliant</span>
+                  <div className="pt-[8px] space-y-[8px]">
+                    <div className="flex justify-between text-[11px]">
+                      <span className="text-[#4ade80]">Compliant</span>
                       <span className="text-white">{summary.counts.COMPLIANT}</span>
                     </div>
-                    <div className="flex justify-between text-xs">
-                      <span className="text-red-500">Non-compliant</span>
+                    <div className="flex justify-between text-[11px]">
+                      <span className="text-[#f87171]">Non-compliant</span>
                       <span className="text-white">{summary.counts.NON_COMPLIANT}</span>
                     </div>
-                    <div className="flex justify-between text-xs">
-                      <span className="text-yellow-500">In Progress</span>
+                    <div className="flex justify-between text-[11px]">
+                      <span className="text-[#facc15]">In Progress</span>
                       <span className="text-white">{summary.counts.IN_PROGRESS}</span>
                     </div>
-                    <div className="flex justify-between text-xs">
-                      <span className="text-blue-500">Not Applicable</span>
+                    <div className="flex justify-between text-[11px]">
+                      <span className="text-[#60a5fa]">Not Applicable</span>
                       <span className="text-white">{summary.counts.NOT_APPLICABLE}</span>
                     </div>
-                    <div className="flex justify-between text-xs">
-                      <span className="text-shadow-muted">Not Started</span>
+                    <div className="flex justify-between text-[11px]">
+                      <span className="text-[#71717A]">Not Started</span>
                       <span className="text-white">{summary.counts.NOT_STARTED}</span>
                     </div>
                   </div>
 
-                  <div className="pt-2 border-t border-shadow-border text-xs flex justify-between">
-                    <span className="text-shadow-muted">Assessment status</span>
+                  <div className="pt-[8px] border-t border-[#2A2A2E] text-[11px] flex justify-between">
+                    <span className="text-[#71717A]">Assessment status</span>
                     <span className="text-white font-bold">{assessment.status.replace('_', ' ')}</span>
                   </div>
-                  <p className="text-[10px] text-shadow-muted">
+                  <p className="text-[10px] text-[#71717A]">
                     Status and score update automatically as requirement statuses are saved — marked COMPLETED once every requirement has been decided.
                   </p>
                 </div>
@@ -259,21 +259,21 @@ function AiGuidanceCard({ assessmentId }: { assessmentId: string }) {
   };
 
   return (
-    <div className="soc-card">
-      <div className="flex items-center gap-2 mb-4 text-shadow-purple">
-        <Sparkles className="w-4 h-4" />
-        <h4 className="font-bold text-sm text-white">AI Guidance</h4>
+    <div className="card-refined">
+      <div className="flex items-center gap-[8px] mb-[14px] text-[#7C3AED]">
+        <Sparkles className="w-[14px] h-[14px]" />
+        <h4 className="font-bold text-[13px] text-white">AI Guidance</h4>
       </div>
 
       {!result && (
         <>
-          <p className="text-xs text-shadow-muted mb-4">
+          <p className="text-[11px] text-[#71717A] mb-[14px]">
             Get a prioritized recommendation for which outstanding requirement to tackle next, grounded in this tenant's real incident and threat data.
           </p>
           <button
             onClick={generate}
             disabled={loading}
-            className="soc-button-primary w-full text-sm disabled:opacity-60"
+            className="btn-primary-refined w-full justify-center text-[12px] disabled:opacity-60"
           >
             {loading ? 'Generating...' : 'Generate Guidance'}
           </button>
@@ -281,28 +281,28 @@ function AiGuidanceCard({ assessmentId }: { assessmentId: string }) {
       )}
 
       {error && (
-        <div className="mt-3 text-[11px] text-[#ef4444] bg-[rgba(239,68,68,0.08)] border border-[rgba(239,68,68,0.3)] rounded-[6px] p-[8px_10px]">
+        <div className="mt-[10px] text-[11px] text-[#ef4444] bg-[rgba(239,68,68,0.08)] border border-[rgba(239,68,68,0.3)] rounded-[6px] p-[8px_10px]">
           {error}
         </div>
       )}
 
       {result?.allAddressed && (
-        <p className="text-xs text-shadow-text">Every requirement is already compliant or marked not applicable — nothing to prioritize.</p>
+        <p className="text-[11px] text-[#E1E1E6]">Every requirement is already compliant or marked not applicable — nothing to prioritize.</p>
       )}
 
       {result && !result.allAddressed && (
-        <div className="space-y-3">
-          <div className="flex items-center gap-2">
-            <span className="text-shadow-purple font-mono text-xs font-bold">{result.priorityRequirementCode}</span>
-            <span className="text-[10px] text-shadow-muted uppercase tracking-wide">Priority</span>
+        <div className="space-y-[12px]">
+          <div className="flex items-center gap-[8px]">
+            <span className="text-[#7C3AED] font-mono text-[11px] font-bold">{result.priorityRequirementCode}</span>
+            <span className="text-[10px] text-[#71717A] uppercase tracking-[0.06em]">Priority</span>
           </div>
-          <p className="text-xs text-shadow-text leading-relaxed">{result.rationale}</p>
+          <p className="text-[11px] text-[#E1E1E6] leading-relaxed">{result.rationale}</p>
           <div>
-            <div className="text-[10px] text-shadow-muted uppercase font-bold mb-2">Next steps</div>
-            <ul className="space-y-1.5">
+            <div className="text-[10px] text-[#71717A] uppercase font-bold mb-[8px]">Next steps</div>
+            <ul className="space-y-[6px]">
               {result.recommendations?.map((rec, i) => (
-                <li key={i} className="text-xs text-shadow-text flex gap-2">
-                  <span className="text-shadow-purple">•</span>
+                <li key={i} className="text-[11px] text-[#E1E1E6] flex gap-[8px]">
+                  <span className="text-[#7C3AED]">•</span>
                   <span>{rec}</span>
                 </li>
               ))}
@@ -311,7 +311,7 @@ function AiGuidanceCard({ assessmentId }: { assessmentId: string }) {
           <button
             onClick={generate}
             disabled={loading}
-            className="text-[10px] font-bold text-shadow-purple uppercase tracking-wide hover:underline cursor-pointer disabled:opacity-50"
+            className="text-[10px] font-bold text-[#7C3AED] uppercase tracking-[0.06em] hover:underline cursor-pointer disabled:opacity-50"
           >
             {loading ? 'Regenerating...' : 'Regenerate'}
           </button>

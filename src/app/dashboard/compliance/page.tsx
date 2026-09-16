@@ -100,7 +100,7 @@ export default function CompliancePage() {
                 <div key={asmt.id} className="bg-[#141417] border border-[#2A2A2E] rounded-[8px] p-[18px] hover:border-[#3a3a3e] transition-colors">
                   <div className="flex justify-between items-start mb-[14px]">
                     <div>
-                      <div className="text-[13px] font-semibold text-white line-height-[1.3]">{asmt.framework.name}</div>
+                      <div className="text-[13px] font-semibold text-white leading-[1.3]">{asmt.framework.name}</div>
                       <div className="text-[10px] text-[#71717A] mt-[3px] uppercase tracking-[0.08em]">{asmt.framework.jurisdiction}</div>
                     </div>
                     <span className={`badge-refined ${asmt.status === 'COMPLETED' ? 'bg-[rgba(34,197,94,0.12)] text-[#4ade80] border-[rgba(34,197,94,0.25)]' : 'bg-[rgba(234,179,8,0.12)] text-[#facc15] border-[rgba(234,179,8,0.25)]'}`}>

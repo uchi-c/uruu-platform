@@ -74,14 +74,14 @@ export default function IncidentDetailPage() {
 
   return (
     <DashboardLayout>
-      <div className="space-y-6">
-        <div className="flex items-center space-x-4">
-          <Link href="/dashboard/incidents" className="p-2 bg-shadow-card border border-shadow-border rounded hover:border-shadow-purple transition-colors">
-            <ChevronLeft className="w-4 h-4 text-white" />
+      <div className="space-y-[20px]">
+        <div className="flex items-center gap-[14px]">
+          <Link href="/dashboard/incidents" className="p-[8px] bg-[#141417] border border-[#2A2A2E] rounded-[6px] hover:border-[#7C3AED] transition-colors">
+            <ChevronLeft className="w-[16px] h-[16px] text-white" />
           </Link>
           <div>
-            <h1 className="text-2xl font-bold text-white">{incident?.title ?? (error ? 'Incident' : 'Loading...')}</h1>
-            <p className="text-shadow-muted text-sm mt-0.5">ID: {id}</p>
+            <h1 className="text-[18px] font-bold text-white tracking-[-0.01em]">{incident?.title ?? (error ? 'Incident' : 'Loading...')}</h1>
+            <p className="text-[12px] text-[#71717A] mt-[3px]">ID: {id}</p>
           </div>
         </div>
 
@@ -92,20 +92,20 @@ export default function IncidentDetailPage() {
         )}
 
         {incident && (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2 space-y-4">
-              <div className="soc-card space-y-4">
-                <h3 className="text-white font-semibold text-sm">Timeline</h3>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-[16px]">
+            <div className="lg:col-span-2 space-y-[16px]">
+              <div className="card-refined space-y-[14px]">
+                <h3 className="text-white font-semibold text-[13px]">Timeline</h3>
                 {incident.timeline.length === 0 ? (
-                  <div className="text-[12px] text-shadow-muted">No recorded activity for this incident yet.</div>
+                  <div className="text-[12px] text-[#71717A]">No recorded activity for this incident yet.</div>
                 ) : (
-                  <div className="space-y-3">
+                  <div className="space-y-[12px]">
                     {incident.timeline.map((entry) => (
-                      <div key={entry.id} className="flex items-start gap-3 pb-3 border-b border-shadow-border last:border-0 last:pb-0">
-                        <Clock className="w-[13px] h-[13px] text-shadow-purple mt-[2px] flex-shrink-0" />
+                      <div key={entry.id} className="flex items-start gap-[12px] pb-[12px] border-b border-[#2A2A2E] last:border-0 last:pb-0">
+                        <Clock className="w-[13px] h-[13px] text-[#7C3AED] mt-[2px] flex-shrink-0" />
                         <div className="flex-1">
                           <div className="text-[12px] text-white font-medium">{entry.action.replace(/_/g, ' ')}</div>
-                          <div className="text-[10px] text-shadow-muted mt-[2px]">
+                          <div className="text-[10px] text-[#71717A] mt-[2px]">
                             {entry.user?.name ?? entry.user?.email ?? 'Unknown user'} · {new Date(entry.timestamp).toLocaleString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                           </div>
                         </div>
@@ -116,74 +116,74 @@ export default function IncidentDetailPage() {
               </div>
 
               {incident.threat && (
-                <div className="soc-card space-y-3">
-                  <div className="flex items-center gap-2">
-                    <ShieldAlert className="w-[14px] h-[14px] text-shadow-purple" />
-                    <h3 className="text-white font-semibold text-sm">Linked threat</h3>
+                <div className="card-refined space-y-[10px]">
+                  <div className="flex items-center gap-[8px]">
+                    <ShieldAlert className="w-[14px] h-[14px] text-[#7C3AED]" />
+                    <h3 className="text-white font-semibold text-[13px]">Linked threat</h3>
                   </div>
                   <div>
                     <div className="text-[13px] text-white font-medium">{incident.threat.title}</div>
-                    <div className="text-[10px] text-shadow-muted font-mono mt-[3px]">{incident.threat.type} · {incident.threat.severity}</div>
-                    <p className="text-[12px] text-shadow-text mt-[8px]">{incident.threat.description}</p>
+                    <div className="text-[10px] text-[#71717A] font-mono mt-[3px]">{incident.threat.type} · {incident.threat.severity}</div>
+                    <p className="text-[12px] text-[#E1E1E6] mt-[8px]">{incident.threat.description}</p>
                   </div>
                 </div>
               )}
             </div>
 
-            <div className="space-y-6">
-              <div className="soc-card">
-                <h3 className="text-lg font-semibold text-white mb-4">Status</h3>
-                <span className={`badge-refined block text-center mb-4 ${statusBadgeClass[incident.status] ?? ''}`}>{incident.status}</span>
-                <label className="text-xs text-shadow-muted uppercase font-bold">Update status</label>
+            <div className="space-y-[16px]">
+              <div className="card-refined">
+                <h3 className="text-[14px] font-semibold text-white mb-[14px]">Status</h3>
+                <span className={`badge-refined block text-center mb-[14px] ${statusBadgeClass[incident.status] ?? ''}`}>{incident.status}</span>
+                <label className="text-[10px] text-[#71717A] uppercase font-bold tracking-[0.09em]">Update status</label>
                 <select
-                  className="w-full bg-shadow-dark border border-shadow-border rounded-md mt-1 p-2 text-sm text-white focus:outline-none focus:border-shadow-purple"
+                  className="w-full bg-[#0A0A0B] border border-[#2A2A2E] rounded-[6px] mt-[6px] p-[8px_10px] text-[12px] text-white outline-none focus:border-[#7C3AED]"
                   value={incident.status}
                   disabled={updating}
                   onChange={(e) => handleStatusChange(e.target.value)}
                 >
                   {STATUSES.map((s) => <option key={s} value={s}>{s}</option>)}
                 </select>
-                <div className="pt-4 mt-4 border-t border-shadow-border space-y-2 text-xs">
+                <div className="pt-[14px] mt-[14px] border-t border-[#2A2A2E] space-y-[8px] text-[11px]">
                   <div className="flex justify-between">
-                    <span className="text-shadow-muted">Created</span>
+                    <span className="text-[#71717A]">Created</span>
                     <span className="text-white">{new Date(incident.createdAt).toLocaleString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-shadow-muted">Last updated</span>
+                    <span className="text-[#71717A]">Last updated</span>
                     <span className="text-white">{new Date(incident.updatedAt).toLocaleString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
                   </div>
                 </div>
               </div>
 
-              <div className="soc-card">
-                <div className="flex items-center gap-2 mb-4">
-                  <Sparkles className="w-[14px] h-[14px] text-shadow-purple" />
-                  <h3 className="text-lg font-semibold text-white">AI Analysis</h3>
+              <div className="card-refined">
+                <div className="flex items-center gap-[8px] mb-[14px]">
+                  <Sparkles className="w-[14px] h-[14px] text-[#7C3AED]" />
+                  <h3 className="text-[14px] font-semibold text-white">AI Analysis</h3>
                 </div>
                 {!aiResponse?.summary && (
                   <button
                     onClick={() => analyzeIncident(id)}
                     disabled={aiLoading}
-                    className="soc-button-primary w-full text-sm disabled:opacity-60"
+                    className="btn-primary-refined w-full justify-center text-[12px] disabled:opacity-60"
                   >
                     {aiLoading ? 'Analyzing...' : aiResponse?.error ? 'Retry Analysis' : 'Run AI Analysis'}
                   </button>
                 )}
                 {aiResponse?.error && (
-                  <div className="text-[12px] text-[#ef4444] mt-3">{aiResponse.error}</div>
+                  <div className="text-[12px] text-[#ef4444] mt-[10px]">{aiResponse.error}</div>
                 )}
                 {aiResponse?.summary && (
-                  <div className="space-y-3">
+                  <div className="space-y-[12px]">
                     <span className={`badge-refined ${statusBadgeClass[aiResponse.riskLevel === 'CRITICAL' || aiResponse.riskLevel === 'HIGH' ? 'OPEN' : aiResponse.riskLevel === 'MEDIUM' ? 'INVESTIGATING' : 'RESOLVED'] ?? ''}`}>
                       {aiResponse.riskLevel} RISK
                     </span>
-                    <p className="text-[12px] text-shadow-text leading-relaxed">{aiResponse.summary}</p>
+                    <p className="text-[12px] text-[#E1E1E6] leading-relaxed">{aiResponse.summary}</p>
                     <div>
-                      <div className="text-xs text-shadow-muted uppercase font-bold mb-2">Recommendations</div>
-                      <ul className="space-y-1.5">
+                      <div className="text-[10px] text-[#71717A] uppercase font-bold tracking-[0.09em] mb-[8px]">Recommendations</div>
+                      <ul className="space-y-[6px]">
                         {aiResponse.recommendations.map((rec: string, i: number) => (
-                          <li key={i} className="text-[12px] text-shadow-text flex gap-2">
-                            <span className="text-shadow-purple">•</span>
+                          <li key={i} className="text-[12px] text-[#E1E1E6] flex gap-[8px]">
+                            <span className="text-[#7C3AED]">•</span>
                             <span>{rec}</span>
                           </li>
                         ))}

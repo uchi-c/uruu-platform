@@ -33,19 +33,6 @@
 }
 
 @layer components {
-  /* Legacy SOC classes */
-  .soc-card {
-    @apply bg-[#141417]/80 backdrop-blur-md border border-[#2A2A2E] rounded-lg p-6 shadow-2xl transition-all duration-300 hover:border-[#7C3AED]/50;
-  }
-  
-  .soc-glow {
-    @apply shadow-[0_0_15px_rgba(124,58,237,0.3)] border-[#7C3AED]/40;
-  }
-
-  .soc-button-primary {
-    @apply bg-[#7C3AED] hover:bg-opacity-90 text-white font-bold py-2 px-4 rounded transition-all shadow-[0_0_10px_rgba(124,58,237,0.5)] active:scale-95;
-  }
-
   /* Refined UI classes */
   .app-container { @apply flex h-screen overflow-hidden; }
   
