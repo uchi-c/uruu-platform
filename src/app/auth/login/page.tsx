@@ -145,10 +145,11 @@ function LoginForm() {
 
           <form onSubmit={handleLogin} className="space-y-[18px]">
             <div className="form-group">
-              <label className="block text-[10px] font-bold text-[#71717A] uppercase tracking-[0.15em] mb-[8px]">Operator identity</label>
+              <label htmlFor="login-email" className="block text-[10px] font-bold text-[#71717A] uppercase tracking-[0.15em] mb-[8px]">Operator identity</label>
               <div className="relative">
                 <User className="absolute left-[11px] top-1/2 -translate-y-1/2 w-[14px] h-[14px] text-[#71717A]" />
                 <input
+                  id="login-email"
                   className="w-full bg-[rgba(10,10,11,0.6)] border border-[#2A2A2E] rounded-[6px] p-[11px_12px_11px_36px] text-white text-[13px] outline-none focus:border-[#7C3AED] focus:shadow-[0_0_0_3px_rgba(124,58,237,0.15)] transition-all"
                   type="email"
                   placeholder="operator@organization.gov"
@@ -162,10 +163,11 @@ function LoginForm() {
             </div>
 
             <div className="form-group">
-              <label className="block text-[10px] font-bold text-[#71717A] uppercase tracking-[0.15em] mb-[8px]">Cryptographic key</label>
+              <label htmlFor="login-password" className="block text-[10px] font-bold text-[#71717A] uppercase tracking-[0.15em] mb-[8px]">Cryptographic key</label>
               <div className="relative">
                 <Lock className="absolute left-[11px] top-1/2 -translate-y-1/2 w-[14px] h-[14px] text-[#71717A]" />
                 <input
+                  id="login-password"
                   className="w-full bg-[rgba(10,10,11,0.6)] border border-[#2A2A2E] rounded-[6px] p-[11px_36px_11px_36px] text-white text-[13px] outline-none focus:border-[#7C3AED] focus:shadow-[0_0_0_3px_rgba(124,58,237,0.15)] transition-all"
                   type={showPassword ? 'text' : 'password'}
                   placeholder="••••••••••••••••"
@@ -208,7 +210,7 @@ function LoginForm() {
             )}
 
             {error && (
-              <div className="text-[11px] text-[#ef4444] bg-[rgba(239,68,68,0.08)] border border-[rgba(239,68,68,0.3)] rounded-[6px] p-[10px_12px]">
+              <div data-testid="error-message" className="text-[11px] text-[#ef4444] bg-[rgba(239,68,68,0.08)] border border-[rgba(239,68,68,0.3)] rounded-[6px] p-[10px_12px]">
                 {error}
               </div>
             )}

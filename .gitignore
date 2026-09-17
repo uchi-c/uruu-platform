@@ -35,3 +35,8 @@ prisma/*.db
 
 # generated training data (regenerable via scripts/generate-training-data.ts)
 /training-data/
+
+# test artifacts
+/test-results/
+/playwright-report/
+/coverage/
